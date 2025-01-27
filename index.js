@@ -56,14 +56,47 @@ app.get('/', async (req, res) => {
 
 // Create
 app.post('/items', async (req, res) => {
-    const { name, description } = req.body;
+    const bookName = req.body.bookName; // Get the book name from the form
+  
     try {
-        const result = await client.query('INSERT INTO items (name, description) VALUES ($1, $2) RETURNING *', [name, description]);
-        res.status(201).json(result.rows[0]);
+      // Search for the book using the Open Library API
+      const response = await axios.get(`https://openlibrary.org/search.json?q=${bookName}`);
+      const firstBook = response.data.docs[0];
+  
+      // Extract the book title from the API response
+      const title = firstBook.title;
+  
+      // Insert the book into the database
+      const result = await client.query(
+        'INSERT INTO items (name) VALUES ($1) RETURNING *',
+        [title]
+      );
+  
+      res.status(201).json(result.rows[0]);
+      res.redirect('/');
     } catch (err) {
-        res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
+      res.redirect('/');
     }
-});
+  });
+
+  app.post('/description', async (req, res) => {
+    const { description } = req.body; 
+    const itemId = req.body.itemId; // Assuming you have a way to get the item ID
+  console.log(description);
+  console.log(itemId);
+    try {
+      // Update the item in the database
+      await client.query(
+        'UPDATE items SET description = $1 WHERE id = $2 RETURNING *',
+        [description, itemId]
+      );
+      res.redirect('/');
+    } catch (err) {
+      console.error("Erro ao atualizar a descrição do item:", err);
+    res.redirect('/');
+    }
+  });
 
 // Read
 app.get('/items', async (req, res) => {

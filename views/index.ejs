@@ -14,22 +14,37 @@
                 <h1 class="text-center">Book List</h1>
             </div>
         </div>
+
+        <h3>Add New Book</h3>
+        <form action="/items" method="post"> 
+          <label for="bookName">Book Name:</label>
+          <input type="text" id="bookName" name="bookName" required>
+          <button type="submit">Add</button>
+        </form>
+
         <div class="container mt-5">
             <div class="row">
                 <% items.forEach(function(item) { %>
                     <div class="col-md-4 mb-4">
-                        <div class="card d-flex justify-content-center align-items-center">
-                            <img src="<%= item.cover %>" class="card-img-top" alt="<%= item.name %>" style="max-width: 200px; height: auto;">
+                        <div class="card d-flex justify-content-center align-items-center pt-4">
+                            <img src="<%= item.cover %>" class="card-img-top" alt="<%= item.name %>" style="max-height: 250px; width: auto;">
                             <div class="card-body">
                                 <h5 class="card-title"><%= item.name %></h5>
                                 <p class="card-text" style="font-size: 0.9em;"><%= item.description %></p>
                             </div>
                         </div>
+                        <form action="/description" method="post" id="descriptionForm"> 
+                            <input type="hidden" name="itemId" value='<%= item.id %>' /> 
+                            <label for="description">Book Comment:</label>
+                            <input type="text" id="description" name="description" required>
+                            <button type="submit">Add Comment</button>
+                        </form>
                     </div>
                 <% }); %>
             </div>
         </div>
     </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
