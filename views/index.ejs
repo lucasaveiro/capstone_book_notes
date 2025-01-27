@@ -4,50 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book List</title>
-    <link rel="stylesheet" href="/public/main.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 </head>
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="text-center">Book List</h1>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="bi bi-book"></i> My Book Collection</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Add Book Form -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="card-title mb-3">Add New Book</h3>
+                <form action="/items" method="post" class="row g-3"> 
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" id="bookName" name="bookName" placeholder="Enter book name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-circle"></i> Add Book</button>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <h3>Add New Book</h3>
-        <form action="/items" method="post"> 
-          <label for="bookName">Book Name:</label>
-          <input type="text" id="bookName" name="bookName" required>
-          <button type="submit">Add</button>
-        </form>
-
-        <div class="container mt-5">
-            <div class="row">
-                <% items.forEach(function(item) { %>
-                    <div class="col-md-4 mb-4">
-                        <div class="card d-flex justify-content-center align-items-center pt-4">
-                            <img src="<%= item.cover %>" class="card-img-top" alt="<%= item.name %>" style="max-height: 250px; width: auto;">
-                            <div class="card-body">
-                                <h5 class="card-title"><%= item.name %></h5>
-                                <p class="card-text" style="font-size: 0.9em;"><%= item.description %></p>
-                            </div>
+        <!-- Book List -->
+        <div class="row">
+            <% items.forEach(function(item) { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm transition-hover">
+                        <div class="text-center p-3">
+                            <img src="<%= item.cover %>" class="card-img-top" alt="<%= item.name %>" 
+                                style="max-height: 250px; width: auto; object-fit: contain;">
                         </div>
-                        <form action="/description" method="post" id="descriptionForm"> 
-                            <input type="hidden" name="itemId" value='<%= item.id %>' /> 
-                            <label for="description">Book Comment:</label>
-                            <input type="text" id="description" name="description" required>
-                            <button type="submit">Add Comment</button>
-                        </form>
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><%= item.name %></h5>
+                            <p class="card-text text-muted"><%= item.description %></p>
+                            
+                            <!-- Comment Form -->
+                            <form action="/description" method="post" class="mt-3"> 
+                                <input type="hidden" name="itemId" value='<%= item.id %>' />
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="description" 
+                                           name="description" placeholder="Add a comment" required>
+                                    <button class="btn btn-outline-primary" type="submit">
+                                        <i class="bi bi-chat-dots"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                <% }); %>
-            </div>
+                </div>
+            <% }); %>
         </div>
     </div>
-    
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <style>
+        .transition-hover {
+            transition: transform 0.2s ease-in-out;
+        }
+        .transition-hover:hover {
+            transform: translateY(-5px);
+        }
+    </style>
 </body>
 </html>
