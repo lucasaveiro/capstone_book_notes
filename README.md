@@ -15,7 +15,7 @@ This is a simple Book List application that allows users to view a list of books
 - Express.js
 - PostgreSQL
 - EJS (Embedded JavaScript templates)
-- Bootstrap 4
+- Bootstrap 5
 - Axios
 
 ## Installation
