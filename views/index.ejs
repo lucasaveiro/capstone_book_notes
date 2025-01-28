@@ -55,6 +55,12 @@
                                     </button>
                                 </div>
                             </form>
+                            <form action="/delete" method="post" class="ms-2">
+                                <input type="hidden" name="itemId" value="<%= item.id %>" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

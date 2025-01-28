@@ -120,6 +120,17 @@ app.put('/items/:id', async (req, res) => {
     }
 });
 
+app.post('/delete', async (req, res) => {
+    const itemId = req.body.itemId;
+    try {
+        await client.query('DELETE FROM items WHERE id = $1', [itemId]);
+        res.redirect('/');
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+        res.redirect('/');
+    }
+});
+
 // Delete
 app.delete('/items/:id', async (req, res) => {
     const { id } = req.params;
