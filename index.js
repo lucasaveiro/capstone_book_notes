@@ -35,10 +35,9 @@ async function getCoverImage(bookName) {
 app.get('/cover/:bookName', async (req, res) => {
     const { bookName } = req.params;
     const cover = await getCoverImage(bookName);
-    console.log(cover);
+
     res.send(`<img src="${cover}" alt="${bookName}">`);
 });
-
 
 app.get('/', async (req, res) => {
     try {
@@ -71,11 +70,8 @@ app.post('/items', async (req, res) => {
         'INSERT INTO items (name) VALUES ($1) RETURNING *',
         [title]
       );
-  
-      res.status(201).json(result.rows[0]);
       res.redirect('/');
     } catch (err) {
-      res.status(500).json({ error: err.message });
       res.redirect('/');
     }
   });
@@ -83,8 +79,7 @@ app.post('/items', async (req, res) => {
   app.post('/description', async (req, res) => {
     const { description } = req.body; 
     const itemId = req.body.itemId; // Assuming you have a way to get the item ID
-  console.log(description);
-  console.log(itemId);
+
     try {
       // Update the item in the database
       await client.query(
@@ -128,17 +123,6 @@ app.post('/delete', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
         res.redirect('/');
-    }
-});
-
-// Delete
-app.delete('/items/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        await client.query('DELETE FROM items WHERE id = $1', [id]);
-        res.status(204).send();
-    } catch (err) {
-        res.status(500).json({ error: err.message });
     }
 });
 
